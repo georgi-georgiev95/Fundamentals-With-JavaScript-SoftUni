@@ -16,7 +16,6 @@ function ladyBug(arr) {
 	}
  
 	for (let i = 2; i < arr.length; i++) {
-		// JS destructuring
 		let [ladybugIndex, command, jumpLength] = arr[i].split(' ');
 		ladybugIndex = +ladybugIndex;
 		jumpLength = +jumpLength;
