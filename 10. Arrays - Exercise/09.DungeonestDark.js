@@ -1,41 +1,61 @@
-function dungeons(arr) {
-    let newArr = arr[0].split("|");
-    let startingHealth = 100;
-    let roomCounter = 0;
-    let coins = 0;
-    for (let i = 0; i < newArr.length; i++) {
-        roomCounter++;
-        let currentAction = newArr[i].split(" ");
-        for (let j = 0; j < currentAction.length-1; j++) {
-            let word = currentAction[j];
-            let num = Number(currentAction[j + 1]);
-            if (word !== "potion" && word !== "chest") {
-                startingHealth -= num;
-                if (startingHealth > 0) {
-                    console.log(`You slayed ${word}.`);
-                } else {
-                    console.log(`You died! Killed by ${word}.`);
-                    console.log(`Best room: ${roomCounter}`);
-                    return;
-                }
-            } else if (word === "potion") {
-                startingHealth += num;
-                if (startingHealth > 100) {
-                    console.log(`You healed for ${100 - (startingHealth-num)} hp.`);
-                    startingHealth = 100;
-                    console.log(`Current health: ${startingHealth} hp.`)
-                } else {
-                    console.log(`You healed for ${num} hp.`);
-                    console.log(`Current health: ${startingHealth} hp.`);
-                }
-            } else if (word === "chest") {
-                coins += num;   
-                console.log(`You found ${num} coins.`)
-            }
+function dungeon(data) {
+    let initialHealth = 100;
+    let initialCoins = 0;
+    let commandArray = data[0].split('|');
+    let commandArrayLength = commandArray.length;
+    let room = 0;
+    let isDead = false;
+
+    for (let index = 0; index < commandArrayLength; index++) {
+        let [command, value] = commandArray[index].split(' ');
+        switch (command) {
+            case 'potion': potion(value); break;
+            case 'chest': chest(value); break;
+            default: fight(command, value); break;
+        }
+        if (isDead) {
+            break;
         }
     }
-    console.log("You've made it!");
-    console.log(`Coins: ${coins}`);
-    console.log(`Health: ${startingHealth}`);
+
+    if (!isDead) {
+        console.log("You've made it!");
+        console.log(`Coins: ${initialCoins}`);
+        console.log(`Health: ${initialHealth}`);
+    }
+
+    function potion(value) {
+        let healedAmmount = 0;
+        if ((initialHealth + Number(value)) > 100) {
+            healedAmmount = 100 - initialHealth;
+            initialHealth = 100;
+        } else {
+            initialHealth += Number(value);
+            healedAmmount = value;
+        }
+        room++;
+        console.log(`You healed for ${healedAmmount} hp.`);
+        console.log(`Current health: ${initialHealth} hp.`);
+    }
+
+    function chest(value) {
+        initialCoins += Number(value);
+        console.log(`You found ${Number(value)} coins.`);
+        room++;
+    }
+
+    function fight(command, value) {
+        let monster = command;
+        let damage = Number(value);
+        room++;
+        if ((initialHealth - damage) > 0) {
+            initialHealth -= damage;
+            console.log(`You slayed ${monster}.`);
+        } else {
+            console.log(`You died! Killed by ${monster}.`)
+            console.log(`Best room: ${room}`);
+            isDead = true;
+        }
+    }
+
 }
-dungeons(["cat 10|potion 30|orc 10|chest 10|snake 25|chest 110"]);
