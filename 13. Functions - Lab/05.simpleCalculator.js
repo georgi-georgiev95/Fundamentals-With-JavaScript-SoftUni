@@ -5,10 +5,10 @@ function calculator(numOne, numTwo, operator) {
     let divide = (numOne, numTwo) => numOne / numTwo;
 
     switch (operator) {
-        case 'add': return add(numOne, numTwo); break;
-        case 'subtract': return subtract(numOne, numTwo); break;
-        case 'multiply': return multiply(numOne, numTwo); break;
-        case 'divide': return divide(numOne, numTwo); break;
+        case 'add': return add(numOne, numTwo);
+        case 'subtract': return subtract(numOne, numTwo);
+        case 'multiply': return multiply(numOne, numTwo);
+        case 'divide': return divide(numOne, numTwo);
     }
 }
 console.log(calculator(50,
