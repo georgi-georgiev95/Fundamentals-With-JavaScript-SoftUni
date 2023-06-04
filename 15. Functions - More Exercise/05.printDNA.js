@@ -1,25 +1,25 @@
-function printDNA(n){
-    let arr = 'ATCGTTAGGG'.split('')
-    for(let i = 1; i <= n; i++){
-        let [a, b] = arr.splice(0,2)
-        if(i === 1 || i % 4 === 1){
-            console.log(`**${a}${b}**`);
+function printDNA(num) {
+    let sequence = ["A", "T", "C", "G", "T", "T", "A", "G", "G", "G"];
+    let result = [];
+    let oddCounter = 0;
+    for (let row = 1; row <= num; row++) {
+        let firstLetter = sequence.shift();
+        let secondLetter = sequence.shift();
+        let firstRow = `**${firstLetter}${secondLetter}**`;
+        let secondRow = `*${firstLetter}--${secondLetter}*`;
+        let thirdRow = `${firstLetter}----${secondLetter}`;
+        if ((row % 2 !== 0) && (oddCounter === 0)) {
+            oddCounter++;
+            console.log(firstRow);
+        } else if ((row % 2 !== 0) && (oddCounter !== 0)) {
+            oddCounter = 0;
+            console.log(thirdRow);
+        } else {
+            console.log(secondRow);
         }
-        else if(i === 2 || i % 4 === 2){
-            console.log(`*${a}--${b}*`);
-        }
-        else if(i === 3 || i % 4 === 3){
-            console.log(`${a}----${b}`);
-        }
-        else if(i === 4 || i % 4 === 0){
-            console.log(`*${a}--${b}*`);
-        }
- 
-        arr.push(a)
-        arr.push(b)
+
+        sequence.push(firstLetter);
+        sequence.push(secondLetter);
     }
 }
-
-printDNA(4);
-
-
+printDNA(10);
