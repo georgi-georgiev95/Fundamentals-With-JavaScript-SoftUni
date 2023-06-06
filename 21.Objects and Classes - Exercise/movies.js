@@ -1,50 +1,33 @@
-function movies(list) {
-
-    let movies = [];
-
-    list.forEach(line => {
-        if (line.includes('addMovie ')) {
-            let name = line.split('addMovie ')[1];
-            movies.push({name});
-        } else if (line.includes('directedBy')) {
-            let [name, director] = line.split(' directedBy ');
-            let movie = movies.find(el => el.name === name);
-
-            if (movie) {
-                movie.director = director;
-            }
-            
-        } else if (line.includes('onDate')) {
-            let [name, date] = line.split(' onDate ');
-            let movie = movies.find(el => el.name === name);
-
-            if (movie) {
-                movie.date = date;
-            }
+function solve(input) {
+    let resultArray = [];
+    for (let index = 0; index < input.length; index++) {
+        let command = input[index];
+        let movieObject = {};
+        if (command.includes('addMovie')) {
+            let movieName = command.split('addMovie ')[1];
+            movieObject.name = movieName;
+            resultArray.push(movieObject);
+        } else if (command.includes('directedBy')) {
+            let movieName = command.split(' directedBy ')[0];
+            let director = command.split(' directedBy ')[1];
+            resultArray.forEach(object => {
+                if (object.name === movieName) {
+                    object.director = director;
+                }
+            })
+        } else {
+            let movieName = command.split(' onDate ')[0];
+            let date = command.split(' onDate ')[1];
+            resultArray.forEach(object => {
+                if (object.name === movieName) {
+                    object.date = date;
+                }
+            })
         }
-    });
-
-    movies.forEach(movie => {
-        if (movie.name && movie.director && movie.date) {
-            console.log(JSON.stringify(movie));
+    }
+    for (const obj of resultArray) {
+        if (obj.name && obj.director && obj.date) {
+            console.log(JSON.stringify(obj));
         }
-    })
+    }
 }
-movies([
-    'addMovie Fast and Furious',
-    'addMovie Godfather',
-    'Inception directedBy Christopher Nolan',
-    'Godfather directedBy Francis Ford Coppola',
-    'Godfather onDate 29.07.2018',
-    'Fast and Furious onDate 30.07.2018',
-    'Batman onDate 01.08.2018',
-    'Fast and Furious directedBy Rob Cohen'
-]);
-movies([
-    'addMovie The Avengers',
-    'addMovie Superman',
-    'The Avengers directedBy Anthony Russo',
-    'The Avengers onDate 30.07.2010',
-    'Captain America onDate 30.07.2010',
-    'Captain America directedBy Joe Russo'
-]);
