@@ -1,31 +1,28 @@
-function catalogue(list) {
-    list.sort((a, b) => a.localeCompare(b));
+function catalogue(input) {
     let obj = {};
-    
-    for (const line of list) {
-        let product = line.split(' : ');
-        obj[product[0]] = Number(product[1]);
+
+    for (const line of input) {
+        let [item, price] = line.split(' : ');
+        obj[item] = price;
     }
 
-    let firstLetter = 'A'
-    let index = 0;
-    for (const key in obj) {
-        if (index === 0) {
-            console.log(key[0]);
-            firstLetter = key[0];
+    const sortedObject = Object.keys(obj).sort((a, b) => a.localeCompare(b));
+    let firstLetter = sortedObject[0][0];
+    for (let i = 0; i < sortedObject.length; i++) {
+        let currentLetter = sortedObject[i][0];
+        if (i === 0) {
+            console.log(firstLetter);
+            console.log(`  ${sortedObject[i]}: ${obj[sortedObject[i]]}`);
+        } else {
+            if (firstLetter === currentLetter) {
+                console.log(`  ${sortedObject[i]}: ${obj[sortedObject[i]]}`);
+            } else {
+                firstLetter = currentLetter;
+                console.log(currentLetter);
+                console.log(`  ${sortedObject[i]}: ${obj[sortedObject[i]]}`);
+            }
         }
-        let currentLetter = key[0];
-        if (currentLetter !== firstLetter) {
-            console.log(currentLetter);
-            firstLetter = currentLetter;
-        }
-        if (key[0] === firstLetter) {
-            console.log(`  ${key}: ${obj[key]}`);
-        }
-        index++;
     }
-    
-
 }
 catalogue([
     'Omlet : 5.4',
